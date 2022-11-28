@@ -7,17 +7,37 @@
 
 struct page{
     // se pa nao precisa disso || long br, bm; //area de memoria que a pagina esta autorizada a realizar operacoes em
-    int index; //indice do quadro na "memoria fisica" || AKA Conteudo bruto da pagina
+    int frame_index; //indice do quadro na "memoria fisica" || AKA Conteudo bruto da pagina
     
 } typedef Page;
 
 struct virtualmem{
 
-    long add;
+    int add;
     char mode;
 
 }typedef VirtualMem;
 
+struct physmem{
+
+    int add;
+    //inserir flags
+
+}typedef PhysMem;   
+
+
+PhysMem* create_phys_mem(int tam_paginas, int total_mem_fisica){
+
+    int tam = (total_mem_fisica * 1000) / tam_paginas;
+
+    PhysMem* memoria = (PhysMem*) malloc(sizeof(PhysMem) * tam);
+
+    for(int i = 0; i<tam; i++){
+        memoria[i].add = 0;
+    }
+
+    return memoria;
+}
 
 void raise(int id){ //raise em erros durante o programa
 
@@ -28,10 +48,12 @@ void raise(int id){ //raise em erros durante o programa
         break;
     
     case 2:
-        printf("ERRO: ARQUIVO NAO ENCONTRADO");
+        printf("ERRO: ARQUIVO NAO ENCONTRADO\n");
+        break;
 
     default:
         printf("ERRO NAO ESPECIFICADO\n");
+        break;
     }
 
     exit(1);
@@ -40,12 +62,12 @@ void raise(int id){ //raise em erros durante o programa
 
 Page* create_page_table(int tam_pagina){
 
-    int qtd_pags = pow(2, 32- (int)(ceil(log2(tam_pagina* 1000)))); //calculo para pegar a quantidade de paginas  necessarias
+    int qtd_pags = pow(2, 32- (int)(ceil(log2(tam_pagina * 1000)))); //calculo para pegar a quantidade de paginas  necessarias
 
     Page* page_table = (Page*) malloc(sizeof(Page) * qtd_pags);
     
     for(int i = 0; i<qtd_pags; i++){
-        page_table[i].index = 0;
+        page_table[i].frame_index = -1;
         
     }
 
@@ -112,10 +134,31 @@ void insert_values(VirtualMem* virtual_mem,char* filename){
     fclose(f);
 }
 
-/*
+void go_simulator(PhysMem* mf,VirtualMem* vm,int tam, int tam_memoria_total, Page* pt,int tam_pagina, char* criteria){ //vm  == virtua_memory array ; pt == page_table array ; criteria == NRU | LRU
+
+    // mf == memoria fisica ; vm == virtual memory ; pt == page table
+
+    int pt_index;
+    int page_fault = 0; //contador de page faults
+    int next_insert = 0; //proxima posicao vazia da tabela de frames
+
+    int qtd_frames = (tam_memoria_total *1000) / tam_pagina; //quantos frames eu tenho
 
 
-fui almoçar. brb
+    for(int i = 0; i<tam; i++){
+        pt_index = vm[i].add >> (int)(ceil(log2(tam_pagina*1000))); //indice para a page table, que é onde estaria localizado a memoria fisica
 
+        if(pt[pt_index].frame_index == -1){ //nao foi alocado nada 
+            page_fault++;
+            
+            if(next_insert < tam_pagina){// se houverem indices vazios..,
+                
+                    
+                pt[pt_index].frame_index = next_insert; //fala que o indice da tabela de paginas é o índice para 
+                
+            }
+        }
 
-*/
+    }
+
+}

@@ -1,6 +1,7 @@
 
 typedef struct page Page;
 typedef struct virtualmem VirtualMem;
+typedef struct physmem PhysMem;
 
 int get_tam(char* filename);
 Page* create_page_table(int tam_pagina);

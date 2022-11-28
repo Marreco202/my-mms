@@ -45,14 +45,6 @@ int main (int args, char* argv[]){
     int total_mem = char_to_int(argv[4]);
     
 
-    int tam = get_tam(argv[2]); //pega o tamanho de hexes do arquivo
-
-
-    VirtualMem* memoria_virtual = create_virtual_mem(tam);
-    insert_values(memoria_virtual,argv[2]);
-    Page* page_table = create_page_table(tam_pagina);
-
-    printf("tamanho da pagina: %d\n total de memoria: %d\n",tam_pagina,total_mem);
 
 
     
