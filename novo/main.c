@@ -3,10 +3,7 @@
 #include "mmu.h"
 #include <string.h>
 #include <math.h>
-/*
-jaja eu me desmuto 
 
-*/
 
 #define ERROR_PARAMETERS 1
 
@@ -26,11 +23,10 @@ int char_to_int(char* s){
 
 int main (int args, char* argv[]){
 
-    printf("=== SIMULATION START! === \n\n"); 
+    printf("Executando o simulador...\n"); 
 
     if(args != PARAMETERS){ //quantidade invalida de parametros
         raise(ERROR_PARAMETERS);
-        exit(1);
     }
 
     /*
@@ -44,10 +40,13 @@ int main (int args, char* argv[]){
     int tam_pagina = char_to_int(argv[3]);
     int total_mem = char_to_int(argv[4]);
     
+    printf("Arquivo de entrada: %s\n",argv[2]);
+    printf("Tamanho de memoria fisica: %s MB\n", argv[4]);
+    printf("Tamanho das páginas: %s KB\n",argv[3]);
+    printf("Algoritmo de substituição: %s\n",argv[1]);
 
+    go_simulator(total_mem,tam_pagina,argv);
 
-
-    
-    printf("=== SIMULATION END! === \n");
+    //printf("Fim de simulação\n");
     return 0;
 }
