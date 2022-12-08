@@ -1,9 +1,14 @@
 
 typedef struct page Page;
-typedef struct virtualmem VirtualMem;
-typedef struct physmem PhysMem;
+typedef struct pageframe PageFrame;
 
+/*
+Aluno: João Victor Godinho Woitschach
+Matrícula: 2011401
+*/
 int get_tam(char* filename);
 Page* create_page_table(int tam_pagina);
-VirtualMem* create_virtual_mem(int tam);
-void insert_values(VirtualMem* virtual_mem,char* filename);
+PageFrame* create_pf(int tam_paginas, int total_mem_fisica);
+void go_simulator(int memoria_total,int tam_pagina, char * argv[]);
+void raise(int id);
+void teste(void);
